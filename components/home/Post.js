@@ -14,6 +14,8 @@ const Post = ({ post }) => {
                 <PostFooter />
                 <Likes post={post} />
                 <Caption post={post} />
+                <CommentsSection post={post} />
+                <Comments post={post} />
             </View>
         </View>
     )
@@ -75,6 +77,32 @@ const Caption = ({ post }) => (
     </View>
 )
 
+
+const CommentsSection = ({ post }) => (
+    <View style={tw`mt-1`}>
+        {/* using !! double negations will make output 'true' or 'false' instead of '1' or '0' to expose truthy value */}
+        {!!post.comments.length && (
+        <Text style={tw`text-gray-500`}>
+            View
+            {post.comments.length > 1 ? ` all ${post.comments.length} comments` : ' 1 comment'}
+        </Text>
+        )}
+    </View>
+)
+
+const Comments = ({ post }) => (
+    <>
+        {post.comments.map((comment, i) => (
+            <View key={i} style={tw`flex-row mt-1`}>
+                <Text style={tw`text-white`}>
+                    <Text style={tw`font-semibold`}>{comment.user}</Text>
+                    {' '}{comment.comment}
+                </Text>
+
+            </View>
+        ))}
+    </>
+)
 
 
 const styles = StyleSheet.create({
