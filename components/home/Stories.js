@@ -24,11 +24,10 @@ const Stories = () => {
         <View style={tw`mb-3`}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 {USERS.map((story, index) => (
-                    <View key={index} style={tw`align-center px-1`}>
-                        <Image source={{ uri: story.avatar }} style={tw`h-15 w-15 rounded-full p-[1.5px] border-red-500 border-2 object-contain`} />
-                        {/* truncate tailwind class doesnt work, so I used custom JS to slice username */}
+                    <View key={index} style={tw`px-1`}>
+                        <Image source={{ uri: story.avatar }} style={tw`h-15 w-15 rounded-full p-[1.5px] border-red-500 border-2`} />
                         <Text style={tw`text-white text-xs w-15 text-center`}>
-                            {story.username.length > 9 ? story.username.slice(0, 7).toLowerCase() + '...' 
+                            {!!story.username.length > 9 ? story.username.slice(0, 7).toLowerCase() + '...' 
                             :
                              story.username.toLowerCase()}
                         </Text>

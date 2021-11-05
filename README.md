@@ -50,3 +50,4 @@ This project can be run from a web browser or the Expo client app. You may find 
 
 ## Uses
  - [tailwind-react-native-classnames](https://github.com/jaredh159/tailwind-react-native-classnames)
+ - [Icons from Icons8](https://icons8.com/)
