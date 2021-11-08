@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import tw from 'twrnc';
 
 
-const Header = () => {
+const Header = ({ navigation }) => {
     return (
         <View style={tw`flex-row justify-between mx-2`}>
             <TouchableOpacity>
@@ -11,7 +11,7 @@ const Header = () => {
             </TouchableOpacity>
 
             <View style={tw`flex-row`}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.push('NewPostScreen')}>
                     <Image source={{uri: 'https://img.icons8.com/fluency-systems-regular/60/ffffff/plus-2-math.png'}} 
                             style={tw`w-8 h-8 ml-2`} />
                 </TouchableOpacity>

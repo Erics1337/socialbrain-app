@@ -50,7 +50,10 @@ This project can be run from a web browser or the Expo client app. You may find 
  - expo start
  - yarn add formik
  - yarn add yup
- - 
+ - yarn add @react-navigation/native
+ - yarn add @react-navigation/stack
+ - yarn add react-native-gesture-handler
+ - yarn add valid-url
 
 ## Uses
  - [tailwind-react-native-classnames](https://github.com/jaredh159/tailwind-react-native-classnames)
