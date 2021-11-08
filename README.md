@@ -47,7 +47,13 @@ This project can be run from a web browser or the Expo client app. You may find 
 ## Commands
  - npx create-react-native-app socialbrain-app
  - yarn ios
+ - expo start
+ - yarn add formik
+ - yarn add yup
+ - 
 
 ## Uses
  - [tailwind-react-native-classnames](https://github.com/jaredh159/tailwind-react-native-classnames)
  - [Icons from Icons8](https://icons8.com/)
+ - Formik for front-end validation
+ - Firebase storage (same as web app)

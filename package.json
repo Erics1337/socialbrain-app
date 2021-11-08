@@ -3,12 +3,16 @@
     "expo": "^43.0.0",
     "expo-cli": "^4.12.11",
     "faker": "^5.5.3",
+    "formik": "^2.2.9",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.2",
     "react-native-elements": "^3.4.2",
+    "react-native-safe-area-context": "^3.3.2",
+    "react-native-safe-area-view": "^1.1.1",
     "react-native-web": "0.17.1",
-    "twrnc": "^2.0.3"
+    "twrnc": "^2.0.3",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
