@@ -6,6 +6,7 @@ import * as Yup from "yup"
 import { Formik } from "formik"
 import * as PLACEHOLDER_IMG from "../../assets/images/photo_camera.png"
 import { Divider } from 'react-native-elements/dist/divider/Divider';
+import validUrl from "valid-url"
 
 // Formik validation schema
 const uploadPostSchema = Yup.object().shape({
@@ -39,7 +40,7 @@ const FormikPostUploader = ({ navigation }) => {
       }) => (
         <>
           <View style={tw`m-10 justify-between flex-row`}>
-            <Image source={{ uri: thumbnailUrl ? thumbnailUrl : PLACEHOLDER_IMG }} style={tw`w-20 h-20 mr-5`}/>
+            <Image source={{ uri: validUrl.isUri(thumbnailUrl) ? thumbnailUrl : PLACEHOLDER_IMG }} style={tw`w-20 h-20 mr-5`}/>
               <View style={tw`flex-1`}>
               <TextInput
                   style={tw`text-white font-semibold`}

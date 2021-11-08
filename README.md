@@ -60,3 +60,6 @@ This project can be run from a web browser or the Expo client app. You may find 
  - [Icons from Icons8](https://icons8.com/)
  - Formik for front-end validation
  - Firebase storage (same as web app)
+
+## ToDo
+- Instead of prop drilling navigation, use react-navigation-hooks
