@@ -54,6 +54,7 @@ This project can be run from a web browser or the Expo client app. You may find 
  - yarn add @react-navigation/stack
  - yarn add react-native-gesture-handler
  - yarn add valid-url
+ - yarn add email-validator
 
 ## Uses
  - [tailwind-react-native-classnames](https://github.com/jaredh159/tailwind-react-native-classnames)
