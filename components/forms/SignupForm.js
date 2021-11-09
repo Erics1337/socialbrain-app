@@ -5,15 +5,18 @@ import {
   TextInput,
   Pressable,
   TouchableOpacity,
+  Alert,
 } from "react-native"
 import tw from "twrnc"
 
 import { Formik } from "formik"
 import * as Yup from "yup"
 import Validator from "email-validator"
+import { signup } from '../../firebase'
 
 const SignupForm = ({ navigation }) => {
     
+  // Signup Form Validation Schema
   const SignupFormSchema = Yup.object().shape({
     email: Yup.string().email().required("An email is required"),
     username: Yup.string().required().min(2, 'A username is required'),
@@ -22,13 +25,30 @@ const SignupForm = ({ navigation }) => {
       .min(6, "Password must be at least 6 characters long"),
   })
 
+
+  const handleSignup = async (email, password) => {
+    try {
+      await signup(email, password)
+      navigation.navigate('HomeScreen')
+    } catch (error) {
+      Alert.alert('My Lord ...', error.message, [{
+        text: 'OK',
+        onPress: () => console.log('OK'),
+        style: 'cancel',
+    },
+    {
+        text: 'Log In', onPress: () => navigation.push('LoginScreen')
+    }])
+    }
+  }
+
   return (
     <View style={tw`mt-10 px-2`}>
       <Formik
         initialValues={{ email: "", username: "", password: "" }}
-        onSubmit={values => console.log(values)}
-            validationSchema={SignupFormSchema}
-            validateOnMount={true}
+        onSubmit={values => handleSignup(values.email, values.password)}
+        validationSchema={SignupFormSchema}
+        validateOnMount={true}
       >
         {({
           handleChange,
