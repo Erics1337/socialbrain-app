@@ -1,12 +1,23 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import tw from 'twrnc';
+import { auth } from '../../firebase';
+
+
+const handleSignout = async () => {
+    try {
+        await auth.signOut()
+        console.log('Signed Out Successfully')
+    } catch (error){
+        console.log(error)
+    }
+}
 
 
 const Header = ({ navigation }) => {
     return (
         <View style={tw`flex-row justify-between mx-2`}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleSignout}>
                 <Image style={tw`w-30 h-10`} source={require('../../assets/images/logo.png')} />
             </TouchableOpacity>
 
