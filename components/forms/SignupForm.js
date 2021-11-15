@@ -12,7 +12,10 @@ import tw from "twrnc"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import Validator from "email-validator"
-import { signup } from '../../firebase'
+import { db, signup } from '../../firebase'
+import { setDoc, collection, doc, serverTimestamp, updateDoc } from "@firebase/firestore";
+
+
 
 const SignupForm = ({ navigation }) => {
     
@@ -26,12 +29,30 @@ const SignupForm = ({ navigation }) => {
   })
 
 
-  const handleSignup = async (email, password) => {
+  // randomuser.me API
+  const getRandomProfilePicture = async () => {
+    const response = await fetch('https://randomuser.me/api')
+    const data = await response.json()
+    return data.results[0].picture.large
+  }
+
+
+  const handleSignup = async (email, password, username) => {
     try {
-      await signup(email, password)
-      navigation.navigate('HomeScreen')
+      const authUser = await signup(email, password)
+      console.log('Firebase User Created Successfully', authUser.user.uid)
+
+      // Add user to the users collection with id of email
+      await setDoc(doc(db, "users", authUser.user.email),{
+        owner_uid: authUser.user.uid,
+        username: username,
+        email: authUser.user.email,
+        profile_picture: await getRandomProfilePicture()
+      })
+
+      console.log('Firebase User Added to Database', authUser.user.uid)
     } catch (error) {
-      Alert.alert('My Lord ...', error.message, [{
+      Alert.alert('Hey! ', error.message, [{
         text: 'OK',
         onPress: () => console.log('OK'),
         style: 'cancel',
@@ -46,7 +67,7 @@ const SignupForm = ({ navigation }) => {
     <View style={tw`mt-10 px-2`}>
       <Formik
         initialValues={{ email: "", username: "", password: "" }}
-        onSubmit={values => handleSignup(values.email, values.password)}
+        onSubmit={values => handleSignup(values.email, values.password, values.username)}
         validationSchema={SignupFormSchema}
         validateOnMount={true}
       >

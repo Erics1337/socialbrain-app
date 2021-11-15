@@ -5,6 +5,7 @@ import tw from 'twrnc';
 
 
 const Post = ({ post }) => {
+    
     return (
         <View style={tw`mb-5`}>
             <Divider style={tw`bg-white`} width={1} orientation='vertical' />
@@ -63,7 +64,7 @@ const Icon = ({imgUrl, altStyle}) => (
 const Likes = ({ post }) => (
     <View style={tw`flex-row mt-1 justify-between`}>
         <Text style={tw`text-white font-semibold`}>
-            {post.likes.toLocaleString('en')} likes
+            {post.likes_by_users.length} likes
         </Text>
     </View>
 )

@@ -33,7 +33,7 @@ const LoginForm = ({ navigation }) => {
         console.log("Firebase Login Successful", email, password)
       // navigation.navigate("Home")
     } catch (error) {
-      Alert.alert('My Lord...', error.message, 
+      Alert.alert('Hey! ', error.message, 
       [{
           text: 'OK',
           onPress: () => console.log('OK'),

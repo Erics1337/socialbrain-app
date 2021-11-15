@@ -37,13 +37,8 @@ This project can be run from a web browser or the Expo client app. You may find 
 - Deploy the native app to the App store and Play store using this guide: [Deployment](https://docs.expo.dev/distribution/app-stores/).
 - Deploy the website using this guide: [Web deployment](https://docs.expo.dev/distribution/publishing-websites/).
 
-## 📝 Notes
-
-- Learn more about [Universal React](https://docs.expo.dev/).
-- See what API and components are [available in the React runtimes](https://docs.expo.dev/versions/latest/).
-- Find out more about developing apps and websites: [Guides](https://docs.expo.dev/guides/).
-
-
+## Features
+ - Authentication handled with firebase auth
 ## Commands
  - npx create-react-native-app socialbrain-app
  - yarn ios
@@ -65,3 +60,6 @@ This project can be run from a web browser or the Expo client app. You may find 
 
 ## ToDo
 - Instead of prop drilling navigation, use react-navigation-hooks
+
+## 📝 Notes
+ - Currently assigns each user that signs up a random profilePicture from randomUser.me
