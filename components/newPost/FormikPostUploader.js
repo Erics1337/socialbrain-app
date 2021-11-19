@@ -4,12 +4,12 @@ import { Button, View, Text, Image, TextInput } from "react-native"
 import tw from "twrnc"
 import * as Yup from "yup"
 import { Formik } from "formik"
-import * as PLACEHOLDER_IMG from "../../assets/images/photo_camera.png"
 import { Divider } from "react-native-elements/dist/divider/Divider"
 import validUrl from "valid-url"
 import { db, auth } from "../../firebase"
 import { collection, limit, onSnapshot, query, where, addDoc, setDoc, getDoc, doc, serverTimestamp } from "@firebase/firestore"
 
+const PLACEHOLDER_IMG = '../../assets/images/photo_camera.png'
 
 // Formik validation schema
 const uploadPostSchema = Yup.object().shape({

@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import tw from 'twrnc';
+import { auth, db } from '../../firebase';
+import { updateDoc, doc, getDocs, arrayUnion, arrayRemove, collection } from '@firebase/firestore';
 
 
 const Post = ({ post }) => {
+
+    const handleLike = post => {
+        // Search for the current user in the likes_by_users array and assign inverted truthy value to variable
+        const currentLikeStatus = !post.likes_by_users.includes(
+            auth.currentUser.email
+        )  // true or false
+
+        console.log(currentLikeStatus)
+
+        // Update likes_by_users array with current user's email inversely on currentLikeStatus
+        const postRef = doc(db, 'users', post.owner_email, 'posts', post.id)
+        updateDoc(postRef, {
+            likes_by_users: currentLikeStatus ? arrayUnion(auth.currentUser.email) : arrayRemove(auth.currentUser.email),
+        })
+        // .then(() => console.log('Document successfully updated'))
+        // .catch((error) => console.log('Error updating document: ', error))
+    }
     
     return (
         <View style={tw`mb-5`}>
@@ -12,7 +31,7 @@ const Post = ({ post }) => {
             <PostHeader post={post} />
             <PostImage post={post} />
             <View style={tw`mx-1 mt-1`}>
-                <PostFooter />
+                <PostFooter post={post} handleLike={handleLike}/>
                 <Likes post={post} />
                 <Caption post={post} />
                 <CommentsSection post={post} />
@@ -41,10 +60,12 @@ const PostImage = ({ post }) => (
 )
 
 
-const PostFooter = () => (
+const PostFooter = ({handleLike, post}) => (
     <View style={tw`flex-row justify-between`}>
         <View style={tw`flex-row w-1/3 justify-between`}>
-            <Icon imgUrl={'https://img.icons8.com/nolan/64/like.png'} />
+            <TouchableOpacity onPress={() => handleLike(post)}>
+                <Image style={tw`h-8 w-8`} source={{uri: post.likes_by_users.includes(auth.currentUser.email) ? 'https://img.icons8.com/nolan/64/filled-like.png' : 'https://img.icons8.com/nolan/64/like.png'}} />
+            </TouchableOpacity>
             <Icon imgUrl={'https://img.icons8.com/nolan/64/topic.png'} />
             <Icon imgUrl={'https://img.icons8.com/nolan/64/sent.png'} altStyle={styles.shareIcon}/>
         </View>

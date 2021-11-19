@@ -6,7 +6,7 @@ import Post from "../components/home/Post";
 import Stories from '../components/home/Stories';
 import { POSTS } from '../data/posts';
 import { db } from '../firebase';
-import { collectionGroup, onSnapshot, getDocs, querySnapshot, orderBy, query, collection } from "@firebase/firestore"
+import { collectionGroup, onSnapshot, getDoc, doc, querySnapshot, orderBy, query, collection } from "@firebase/firestore"
 
 
 const HomeScreen = ({ navigation }) => {
@@ -15,11 +15,14 @@ const HomeScreen = ({ navigation }) => {
 
     // Gets all posts
     useEffect(() => {
-        onSnapshot(collectionGroup(db, 'posts'), snapshot => {
-            setPosts(snapshot.docs.map(doc => doc.data()))
+        onSnapshot(collectionGroup(db, 'posts') , snapshot => {
+            setPosts(snapshot.docs.map(doc => (
+                {id: doc.id, ...doc.data()}
+                )
+            ))
         })
     },[db])
-    
+
 
     return (
         <SafeAreaView style={styles.container}>

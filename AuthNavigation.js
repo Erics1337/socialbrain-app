@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {SignedInStack, SignedOutStack} from './screens/navigation'
+import {SignedInStack, SignedOutStack} from './screens/Navigation'
 import { auth } from './firebase'
 
 
