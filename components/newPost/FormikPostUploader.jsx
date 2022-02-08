@@ -43,7 +43,6 @@ const FormikPostUploader = ({ navigation }) => {
 
   const uploadPostToFirebase = async (imageUrl, caption) => {
 
-
     const docRef = await addDoc(collection(db, 'users', auth.currentUser.email, 'posts'), {
       imageUrl: imageUrl,
       user: currentLoggedInUser.username,

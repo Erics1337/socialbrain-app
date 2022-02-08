@@ -16,12 +16,12 @@ import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } f
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyB2WpIA7qOhi7jr6O8VMA_JhEKby-cQSf8",
-  authDomain: "socialbrain-app.firebaseapp.com",
-  projectId: "socialbrain-app",
-  storageBucket: "socialbrain-app.appspot.com",
-  messagingSenderId: "1050345594920",
-  appId: "1:1050345594920:web:4055281df89c4c8918151d"
+  apiKey: "AIzaSyA3nNcamCycwq9q7za1p5ltS-tVGKQaT_8",
+  authDomain: "socialbrainnet.firebaseapp.com",
+  projectId: "socialbrainnet",
+  storageBucket: "socialbrainnet.appspot.com",
+  messagingSenderId: "199763983513",
+  appId: "1:199763983513:web:1e9575a944abcbe1a84c08"
 };
 
 // Initialize Firebase
