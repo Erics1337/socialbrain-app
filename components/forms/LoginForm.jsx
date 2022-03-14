@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import {
   View,
   Text,
@@ -13,9 +13,12 @@ import { Formik } from "formik"
 import * as Yup from "yup"
 import Validator from "email-validator"
 import { login } from '../../firebase'
+import UserContext from "../../context/userContext";
 
 
 const LoginForm = ({ navigation }) => {
+	const { loginUser } = useContext(UserContext)
+  
     
   // Login Validation Schema
   const LoginFormSchema = Yup.object().shape({
@@ -31,6 +34,7 @@ const LoginForm = ({ navigation }) => {
     try {
       await login(email, password)
         console.log("Firebase Login Successful", email, password)
+        loginUser()
       // navigation.navigate("Home")
     } catch (error) {
       Alert.alert('Hey! ', error.message, 

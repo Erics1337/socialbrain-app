@@ -1,47 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
-import BottomTabs, { bottomTabIcons } from "../components/home/BottomTabs";
-import Header from '../components/home/Header';
-import Post from "../components/home/Post";
+import Navbar from '../components/home/Navbar';
 import Stories from '../components/home/Stories';
-import { POSTS } from '../data/posts';
-import { db } from '../firebase';
-import { collectionGroup, onSnapshot, getDoc, doc, querySnapshot, orderBy, query, collection } from "@firebase/firestore"
+import Posts from '../components/home/posts/Posts';
+import BottomTabs from '../components/home/BottomTabs';
 
 
 const HomeScreen = ({ navigation }) => {
-
-    const [posts, setPosts] = useState([])
-
-    // Gets all posts
-    useEffect(() => {
-        onSnapshot(collectionGroup(db, 'posts') , snapshot => {
-            setPosts(snapshot.docs.map(doc => (
-                {id: doc.id, ...doc.data()}
-                )
-            ))
-        })
-    },[db])
-
-
     return (
         <SafeAreaView style={styles.container}>
-            <Header navigation={navigation} />
+            <Navbar navigation={navigation} />
             <Stories />
             <ScrollView>
-                {posts.map((post, i) => (
-                    <Post post={post} key={i}/>
-                ))}
-                
+                {/* <Posts /> */}
             </ScrollView>
-            <BottomTabs icons={bottomTabIcons} />
+            <BottomTabs />
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'black',
+        backgroundColor: 'white',
         flex: 1,
     },
 })
