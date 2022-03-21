@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import tw from 'twrnc';
 import { auth, db } from '../../../firebase';
@@ -13,6 +13,15 @@ import {
     setDoc,
     deleteDoc
 } from "@firebase/firestore"
+import { HeartIcon as HeartIconFilled } from "react-native-heroicons/solid";
+import { 	
+    BookmarkIcon,
+	ChatIcon,
+	DotsHorizontalIcon,
+	EmojiHappyIcon,
+	HeartIcon,
+	PaperAirplaneIcon, } from "react-native-heroicons/outline";
+
 
 const Post = ({ id, username, userImg, image, caption, currentUser }) => {
 
@@ -37,9 +46,7 @@ const Post = ({ id, username, userImg, image, caption, currentUser }) => {
 	const [comments, setComments] = useState([])
 	const [likes, setLikes] = useState([])
 	const [hasLiked, setHasLiked] = useState(false)
-
 	const [openComments, setOpenComments] = useState(false)
-
 
     	// Get comments and combine user data
 	useEffect(() => {
@@ -82,8 +89,7 @@ const Post = ({ id, username, userImg, image, caption, currentUser }) => {
 	}, [db, id])
 
 	//   Searches likes array in state if user is in there, and if not (findIndex returns -1) setHasLiked to false
-	useEffect(
-		() =>
+	useEffect(() =>
 			setHasLiked(
 				likes.findIndex((like) => like.id === currentUser.uid) !== -1
 			),
@@ -123,9 +129,9 @@ const Post = ({ id, username, userImg, image, caption, currentUser }) => {
             <PostHeader username={username} userImg={userImg} />
             <PostImage image={image} />
             <View style={tw`mx-1 mt-1`}>
-                <PostFooter likes={likes} likePost={likePost} currentUser={currentUser} />
+                <PostFooter hasLiked={hasLiked} likePost={likePost} openComments={openComments} setOpenComments={setOpenComments} />
                 <Likes likes={likes} />
-                <Caption post={caption} username={username} />
+                <Caption caption={caption} username={username} />
                 <CommentsSection comments={comments} />
                 <Comments comments={comments} />
             </View>
@@ -140,7 +146,7 @@ const PostHeader = ({username, userImg}) => (
             <Image source={{ uri: userImg }} style={tw`h-8 w-8 rounded-full p-[1.5px] border-red-500 border-2`}/>
             <Text style={tw`ml-3 font-semibold`}>{username}</Text>
         </View>
-        <Text style={tw`font-semibold`}>...</Text>
+        <DotsHorizontalIcon style={tw`h-5 text-black`} />
     </View>
 )
 
@@ -152,26 +158,25 @@ const PostImage = ({image}) => (
 )
 
 
-const PostFooter = ({likePost, likes, currentUser}) => (
+const PostFooter = ({likePost, hasLiked, openComments, setOpenComments}) => (
     <View style={tw`flex-row justify-between`}>
         <View style={tw`flex-row w-1/3 justify-between`}>
             <TouchableOpacity onPress={() => likePost()}>
-                <Image style={tw`h-8 w-8`} source={{uri: likes.includes(currentUser.uid) ? 'https://img.icons8.com/nolan/64/filled-like.png' : 'https://img.icons8.com/nolan/64/like.png'}} />
+                {hasLiked ? <HeartIconFilled style={tw`text-red-500`} /> : <HeartIcon style={tw`text-black`} />}
             </TouchableOpacity>
-            <Icon imgUrl={'https://img.icons8.com/nolan/64/topic.png'} />
-            <Icon imgUrl={'https://img.icons8.com/nolan/64/sent.png'} altStyle={styles.shareIcon}/>
+            <TouchableOpacity onPress={() => setOpenComments(!openComments)}>
+                <ChatIcon style={tw`text-black`} />
+            </TouchableOpacity>
+            <TouchableOpacity>
+                <PaperAirplaneIcon style={tw`text-black`} />
+            </TouchableOpacity>
         </View>
         <View>
-            <Icon imgUrl={'https://img.icons8.com/nolan/64/bookmark.png'} />
+            <TouchableOpacity>
+                <BookmarkIcon style={tw`text-black`} />
+            </TouchableOpacity>
         </View>
     </View>
-)
-
-
-const Icon = ({imgUrl, altStyle}) => (
-    <TouchableOpacity>
-        <Image style={[tw`w-8 h-8`, altStyle]} source={{uri: imgUrl}} />
-    </TouchableOpacity>
 )
 
 const Likes = ({ likes }) => (
@@ -217,14 +222,6 @@ const Comments = ({ comments }) => (
         ))}
     </View>
 )
-
-
-const styles = StyleSheet.create({
-    shareIcon: {
-        transform: [{ rotate: '320deg' }],
-        marginTop: -1,
-    }
-})
 
 
 export default Post
