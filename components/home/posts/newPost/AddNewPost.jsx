@@ -1,7 +1,9 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import tw from 'twrnc';
-import FormikPostUploader from './FormikPostUploader';
+import FormikPostUploader from './FormikPostUploader'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 
 const AddNewPost = ({ navigation }) => (
     <View style={tw`mx-4`}>
@@ -13,9 +15,9 @@ const AddNewPost = ({ navigation }) => (
     const Header = ({ navigation }) => (
     <View style={tw`flex-row items-center justify-between`}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image source={{uri: 'https://img.icons8.com/ios-glyphs/90/ffffff/back.png'}} style={{width: 30, height: 30}}/>
+            <FontAwesomeIcon icon={ faAngleLeft } style={tw`w-7 h-7 ml-2 my-1`} />
         </TouchableOpacity>
-            <Text style={tw`text-white font-semibold`}>Add New Post</Text>
+            <Text style={tw`font-semibold`}>Add New Post</Text>
             <Text></Text>
     </View>
 )

@@ -1,69 +1,123 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Post from './Post';
-import UserContext from "../../../context/userContext"
 import { auth, db } from '../../../firebase'
+import { FlatList, Text } from 'react-native'
+import UserContext from "../../../context/userContext"
+import tw from "twrnc"
 import {
 	collection,
 	onSnapshot,
 	orderBy,
 	query,
 	where,
+	limit,
+	get,
+	getDocs,
 	getDoc,
-	doc
+	doc,
+	startAfter
 } from "@firebase/firestore"
+import Loader from '../../Loader';
 
 function Posts() {
-	const { currentUser, currentGroup, combineGroupsUsers } = useContext(UserContext)
+	const { currentUser, currentGroup, combineGroupsUsers } =
+	useContext(UserContext)
+const [posts, setPosts] = useState([])
+const [lastKey, setLastKey] = useState(null)
+const [hasMorePosts, setHasMorePosts] = useState(true)
+const [loading, setLoading] = useState(false)
 
-	const [posts, setPosts] = useState([])
-	
-	// Here we need to get all the posts where username is in currentUser.following and
-	// attach the associated post's username's profilePic to the post object
-	useEffect(() => {
-    if (!currentUser) return
-			const unsubscribe = onSnapshot(
-				query(
-					collection(db, "posts"),
-					where("uid", 'in', [...combineGroupsUsers(currentGroup, currentUser.uid), currentUser.uid]),
-					orderBy("timestamp", "desc")
-				),
-				(postsSnapshot) => {
-					setPosts([])
-						postsSnapshot.docs.forEach((postSnap) => {
-							getDoc(doc(db, "users", postSnap.data().uid))
-							.then((userSnap) => {
-								setPosts((prevPosts) => [
-									...prevPosts,
-									{
-										id: postSnap.id,
-										...postSnap.data(),
-										username: userSnap.data().username,
-										userImg: userSnap.data().profilePic,
-									},
-								])
-							})
-						})
-				}
+
+function handleLoadMore() {
+	// if (!loading) 
+	fetchPosts(lastKey)
+}
+
+/* ------------------------ Fetch Posts w/ key and batchSize ----------------------- */
+const fetchPosts = async (key = null, batchSize = 2) => {
+	try {
+		setLoading(true)
+		// Query to fetch first batch of posts
+		let q = query(
+			collection(db, "posts"),
+			where("uid", "in", [
+				...combineGroupsUsers(currentGroup, currentUser),
+				currentUser.uid,
+			]),
+			orderBy("timestamp", "desc"),
+			limit(batchSize)
 			)
-			return () => unsubscribe()
-	}, [db, currentGroup])
+			if (key) {
+			console.log('fetching posts');
+			// If key is passed, create query to fetch next batch of posts
+			q = query(
+				collection(db, "posts"),
+				where("uid", "in", [
+					...combineGroupsUsers(currentGroup, currentUser),
+					currentUser.uid,
+				]),
+				orderBy("timestamp", "desc"),
+				limit(batchSize),
+				startAfter(key || new Date(253402300799999))
+			)
+		}
+		const postsSnap = await getDocs(q)
+		postsSnap.forEach((postDoc) => {
+			getDoc(doc(db, "users", postDoc.data().uid))
+				.then((userDoc) => {
+					setPosts((prevPosts) => [
+						...prevPosts,
+						{
+							id: postDoc.id,
+							...postDoc.data(),
+							user: userDoc.data(),
+						},
+					])
+				})
+				.catch((e) => console.log(e))
+			setLastKey(postDoc.data().timestamp)
+		})
+		if (postsSnap.docs.length < batchSize) setHasMorePosts(false)
+		setLoading(false)
+	} catch (e) {
+		console.log(e)
+	}
+}
 
+useEffect(() => {
+	if (!loading) setHasMorePosts(true)
+	setPosts([])
+	fetchPosts()
+}, [currentGroup])
 
 
   return (
-		<div>
-			{posts.map((post) => (
-				<Post
-					currentUser={auth}
-					key={post.id}
-					id={post.id}
-					username={post.username}
-					userImg={post.userImg}
-					image={post.image}
-					caption={post.caption}
-				/>
-			))}
-		</div>
+	<FlatList
+	keyExtractor={(item) => item.id}
+	contentContainerSyle={tw`flex-1`}
+	data={posts}
+	renderItem={post => <Post
+			currentUser={currentUser}
+			key={post.item.id}
+			id={post.item.id}
+			image={post.item.image}
+			likes={post.item.likes}
+			caption={post.item.caption}
+			username={post.item.user.username}
+			userImg={post.item.user.profilePic}
+			/>
+		}
+	ListFooterComponent={() => (
+		hasMorePosts && <Loader />
+	)
+	}
+	onEndReachedThreshold={0.2}
+	onEndReached={handleLoadMore}
+	refreshing={loading}
+	onRefresh={() => {	
+		setPosts([])
+		fetchPosts()}}
+	/>
   )
 }
 

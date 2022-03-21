@@ -3,27 +3,35 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import tw from 'twrnc';
 import { auth, db } from '../../../firebase';
-import { updateDoc, doc, getDocs, arrayUnion, arrayRemove, collection } from '@firebase/firestore';
+import {
+	collection,
+	onSnapshot,
+	orderBy,
+	query,
+	getDoc,
+	doc,
+    setDoc,
+    deleteDoc
+} from "@firebase/firestore"
 
+const Post = ({ id, username, userImg, image, caption, currentUser }) => {
 
-const Post = ({ post, id, username, userImg, img, currentUser }) => {
+    // const handleLike = post => {
+    //     // Search for the current user in the likes_by_users array and assign inverted truthy value to variable
+    //     const currentLikeStatus = !post.likes.includes(
+    //         auth.currentUser.uid
+    //     )  // true or false
 
-    const handleLike = post => {
-        // Search for the current user in the likes_by_users array and assign inverted truthy value to variable
-        const currentLikeStatus = !post.likes.includes(
-            auth.currentUser.uid
-        )  // true or false
+    //     console.log(currentLikeStatus)
 
-        console.log(currentLikeStatus)
-
-        // Update likes array with current user's uid inversely on currentLikeStatus
-        const postRef = doc(db, 'posts', post.id, 'posts', 'likes')
-        updateDoc(postRef, {
-            likes: currentLikeStatus ? arrayUnion(auth.currentUser.uid) : arrayRemove(auth.currentUser.uid),
-        })
-        // .then(() => console.log('Document successfully updated'))
-        // .catch((error) => console.log('Error updating document: ', error))
-    }
+    //     // Update likes array with current user's uid inversely on currentLikeStatus
+    //     const postRef = doc(db, 'posts', post.id, 'posts', 'likes')
+    //     updateDoc(postRef, {
+    //         likes: currentLikeStatus ? arrayUnion(auth.currentUser.uid) : arrayRemove(auth.currentUser.uid),
+    //     })
+    //     // .then(() => console.log('Document successfully updated'))
+    //     // .catch((error) => console.log('Error updating document: ', error))
+    // }
 
 	const [comment, setComment] = useState("")
 	const [comments, setComments] = useState([])
@@ -111,44 +119,44 @@ const Post = ({ post, id, username, userImg, img, currentUser }) => {
     
     return (
         <View style={tw`mb-5`}>
-            <Divider style={tw`bg-white`} width={1} orientation='vertical' />
+            <Divider style={tw`bg-black`} width={1} orientation='vertical' />
             <PostHeader username={username} userImg={userImg} />
-            <PostImage img={img} />
+            <PostImage image={image} />
             <View style={tw`mx-1 mt-1`}>
-                <PostFooter likes={likes} handleLike={likePost}/>
-                <Likes post={post} />
-                <Caption post={post} />
-                <CommentsSection post={post} />
-                <Comments post={post} />
+                <PostFooter likes={likes} likePost={likePost} currentUser={currentUser} />
+                <Likes likes={likes} />
+                <Caption post={caption} username={username} />
+                <CommentsSection comments={comments} />
+                <Comments comments={comments} />
             </View>
         </View>
     )
 }
 
 
-const PostHeader = (username, userImg) => (
+const PostHeader = ({username, userImg}) => (
     <View style={tw`flex-row justify-between m-5`}>
         <View style={tw`flex-row items-center`}>
             <Image source={{ uri: userImg }} style={tw`h-8 w-8 rounded-full p-[1.5px] border-red-500 border-2`}/>
-            <Text style={tw`text-white ml-3 font-semibold`}>{username}</Text>
+            <Text style={tw`ml-3 font-semibold`}>{username}</Text>
         </View>
-        <Text style={tw`text-white font-semibold`}>...</Text>
+        <Text style={tw`font-semibold`}>...</Text>
     </View>
 )
 
 
-const PostImage = ( img ) => (
+const PostImage = ({image}) => (
     <View style={tw`w-full h-110`}>
-        <Image source={{ uri: img }} style={tw`h-full`} />
+        <Image source={{ uri: image }} style={tw`h-full`} />
     </View>
 )
 
 
-const PostFooter = (handleLike, likes) => (
+const PostFooter = ({likePost, likes, currentUser}) => (
     <View style={tw`flex-row justify-between`}>
         <View style={tw`flex-row w-1/3 justify-between`}>
-            <TouchableOpacity onPress={() => handleLike(post)}>
-                <Image style={tw`h-8 w-8`} source={{uri: likes.includes(auth.currentUser.email) ? 'https://img.icons8.com/nolan/64/filled-like.png' : 'https://img.icons8.com/nolan/64/like.png'}} />
+            <TouchableOpacity onPress={() => likePost()}>
+                <Image style={tw`h-8 w-8`} source={{uri: likes.includes(currentUser.uid) ? 'https://img.icons8.com/nolan/64/filled-like.png' : 'https://img.icons8.com/nolan/64/like.png'}} />
             </TouchableOpacity>
             <Icon imgUrl={'https://img.icons8.com/nolan/64/topic.png'} />
             <Icon imgUrl={'https://img.icons8.com/nolan/64/sent.png'} altStyle={styles.shareIcon}/>
@@ -166,48 +174,48 @@ const Icon = ({imgUrl, altStyle}) => (
     </TouchableOpacity>
 )
 
-const Likes = ({ post }) => (
+const Likes = ({ likes }) => (
     <View style={tw`flex-row mt-1 justify-between`}>
-        <Text style={tw`text-white font-semibold`}>
-            {post.likes_by_users.length} likes
+        <Text style={tw`text-black font-semibold`}>
+            {likes.length} likes
         </Text>
     </View>
 )
 
-const Caption = ({ post }) => (
+const Caption = ({ caption, username }) => (
     <View style={tw`mt-1`}>
-        <Text style={tw`text-white`}>
-            <Text style={tw`font-bold`}>{post.user}</Text>
-            <Text> {post.caption}</Text>
+        <Text style={tw`text-black`}>
+            <Text style={tw`font-bold`}>{username}</Text>
+            <Text> {caption}</Text>
         </Text>
     </View>
 )
 
 
-const CommentsSection = ({ post }) => (
+const CommentsSection = ({ comments }) => (
     <View style={tw`mt-1`}>
         {/* using !! double negations will make output 'true' or 'false' instead of '1' or '0' to expose truthy value */}
-        {!!post.comments.length && (
+        {!!comments.length && (
         <Text style={tw`text-gray-500`}>
             View
-            {post.comments.length > 1 ? ` all ${post.comments.length} comments` : ' 1 comment'}
+            {comments.length > 1 ? ` all ${comments.length} comments` : ' 1 comment'}
         </Text>
         )}
     </View>
 )
 
-const Comments = ({ post }) => (
-    <>
-        {post.comments.map((comment, i) => (
+const Comments = ({ comments }) => (
+    <View>
+        {comments.map((comment, i) => (
             <View key={i} style={tw`flex-row mt-1`}>
-                <Text style={tw`text-white`}>
-                    <Text style={tw`font-semibold`}>{comment.user}</Text>
+                <Text style={tw`text-black`}>
+                    <Text style={tw`font-semibold`}>{comment.username}</Text>
                     {' '}{comment.comment}
                 </Text>
 
             </View>
         ))}
-    </>
+    </View>
 )
 
 

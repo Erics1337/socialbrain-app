@@ -188,6 +188,7 @@ export const UserProvider = ({ children }) => {
 		<UserContext.Provider
 			value={{
 				...state,
+				groups,
 				dispatch,
 				loginUser,
 				setCurrentGroup,

@@ -6,7 +6,7 @@ import * as Yup from "yup"
 import { Formik } from "formik"
 import { Divider } from "react-native-elements/dist/divider/Divider"
 import validUrl from "valid-url"
-import { db, auth } from "../../firebase"
+import { db, auth } from "../../../../firebase"
 import { collection, limit, onSnapshot, query, where, addDoc, setDoc, getDoc, doc, serverTimestamp } from "@firebase/firestore"
 
 const PLACEHOLDER_IMG = '../../assets/images/photo_camera.png'

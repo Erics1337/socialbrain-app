@@ -40,15 +40,26 @@ This project can be run from a web browser or the Expo client app. You may find 
 ## Features
  - Authentication handled with firebase auth
  - Forms handled with formik
+
+## Feature Wish-list
+- Infinite scroll on feed
 ## Getting Started
 ```
-expo start
+npm start
+```
+or
+```
+open -a Simulator && expo start
 ```
 ## Uses
  - [tailwind-react-native-classnames](https://github.com/jaredh159/tailwind-react-native-classnames)
  - [Icons from Icons8](https://icons8.com/)
  - Formik for front-end validation
  - Firebase storage (same as web app)
+ - Nativebase components
+ - react-native-css-transformer, which transforms CSS into a React Native-compatible style object and handles live reloading
+ - babel-plugin-react-native-platform-specific-extensions, which transforms ES6 import statements into platform-specific require statements if the platform specific files exist on disk.
+ - babel-plugin-react-native-classname-to-style, which transforms the className property into a style property
 
 ## ToDo
 - Instead of prop drilling navigation, use react-navigation-hooks
