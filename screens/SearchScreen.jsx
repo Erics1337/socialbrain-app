@@ -5,7 +5,6 @@ import SafeAreaView from "react-native-safe-area-view"
 import { collection, where, query, limit, getDocs } from "@firebase/firestore"
 import { db } from "../firebase"
 import SearchBar from "react-native-searchbar"
-import { ChevronLeftIcon } from "react-native-heroicons/solid"
 
 function SearchScreen({ navigation }) {
 	const [searchResults, setSearchResults] = useState([])

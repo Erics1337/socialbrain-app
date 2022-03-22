@@ -6,7 +6,8 @@ import NewPostScreen from './NewPostScreen'
 import LoginScreen from './LoginScreen'
 import SignupScreen from './SignupScreen'
 import Messaging from './Messaging'
-import Search from './SearchScreen'
+import SearchScreen from './SearchScreen'
+import ProfileScreen from './ProfileScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -23,7 +24,8 @@ export const SignedInStack = () => (
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="SignupScreen" component={SignupScreen} />
             <Stack.Screen name="Messaging" component={Messaging} />
-            <Stack.Screen name="Search" component={Search} />
+            <Stack.Screen name="SearchScreen" component={SearchScreen} />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
         </Stack.Navigator>
     </NavigationContainer>
 )

@@ -195,7 +195,8 @@ export const UserProvider = ({ children }) => {
 				combineGroupsUsers,
 				groupNumber,
 				setCurrentUser,
-				usersInGroup
+				usersInGroup,
+				setLoading
 			}}>
 			{children}
 		</UserContext.Provider>
