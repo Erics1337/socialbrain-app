@@ -132,8 +132,8 @@ const Post = ({ id, username, userImg, image, caption, currentUser }) => {
                 <PostFooter hasLiked={hasLiked} likePost={likePost} openComments={openComments} setOpenComments={setOpenComments} />
                 <Likes likes={likes} />
                 <Caption caption={caption} username={username} />
-                <CommentsSection comments={comments} />
-                <Comments comments={comments} />
+                <CommentsSection comments={comments} openComments={openComments} setOpenComments={setOpenComments} />
+                <Comments comments={comments} openComments={openComments} />
             </View>
         </View>
     )
@@ -197,27 +197,28 @@ const Caption = ({ caption, username }) => (
 )
 
 
-const CommentsSection = ({ comments }) => (
+const CommentsSection = ({ comments, openComments, setOpenComments }) => (
     <View style={tw`mt-1`}>
         {/* using !! double negations will make output 'true' or 'false' instead of '1' or '0' to expose truthy value */}
-        {!!comments.length && (
-        <Text style={tw`text-gray-500`}>
-            View
-            {comments.length > 1 ? ` all ${comments.length} comments` : ' 1 comment'}
-        </Text>
+        {!!comments.length && !openComments && (
+            <TouchableOpacity onPress={() => setOpenComments(!openComments)}>
+                <Text style={tw`text-gray-500`}>
+                    View
+                    {comments.length > 1 ? ` all ${comments.length} comments` : ' 1 comment'}
+                </Text>
+            </TouchableOpacity>
         )}
     </View>
 )
 
-const Comments = ({ comments }) => (
+const Comments = ({ comments, openComments }) => (
     <View>
-        {comments.map((comment, i) => (
+        {openComments && comments.map((comment, i) => (
             <View key={i} style={tw`flex-row mt-1`}>
                 <Text style={tw`text-black`}>
                     <Text style={tw`font-semibold`}>{comment.username}</Text>
                     {' '}{comment.comment}
                 </Text>
-
             </View>
         ))}
     </View>
