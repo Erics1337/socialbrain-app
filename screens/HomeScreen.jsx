@@ -28,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
             <GroupsTabs />
             <Stories />
             <Posts />
-            <BottomTabs />
+            <BottomTabs navigation={navigation} />
         </SafeAreaView>
     )
 }

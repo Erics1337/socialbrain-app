@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import SafeAreaView from 'react-native-safe-area-view';
+import SafeAreaView from 'react-native-safe-area-view'
 
 import tw from 'twrnc';
 

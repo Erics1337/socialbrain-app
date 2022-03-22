@@ -8,7 +8,7 @@ import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { faUserGroup, faSearch, faDoorClosed, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
   
-const BottomTabs = () => {
+const BottomTabs = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState('Home')
 
     const handleSignout = async () => {
@@ -26,7 +26,7 @@ const BottomTabs = () => {
       <View style={tw`w-full bottom-[1%] z-10`}>
         <Divider width={1} orientation='vertical' />
           <View style={tw`flex-row justify-evenly pt-4`}>
-            <TouchableOpacity onPress={() => setActiveTab('search')}>
+            <TouchableOpacity onPress={() => navigation.push('Search')}>
               <FontAwesomeIcon icon={ faSearch } style={tw`w-7 h-7 ml-2 my-1`} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setActiveTab('groups')}>

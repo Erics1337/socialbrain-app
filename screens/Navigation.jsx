@@ -1,13 +1,14 @@
 import React from 'react'
-import { createStackNavigator  } from '@react-navigation/stack'
+import { createNativeStackNavigator  } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native'
 import HomeScreen from './HomeScreen'
 import NewPostScreen from './NewPostScreen'
 import LoginScreen from './LoginScreen'
 import SignupScreen from './SignupScreen'
 import Messaging from './Messaging'
+import Search from './SearchScreen'
 
-const Stack = createStackNavigator()
+const Stack = createNativeStackNavigator()
 
 const screenOptions = {
     headerShown: false
@@ -22,6 +23,7 @@ export const SignedInStack = () => (
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="SignupScreen" component={SignupScreen} />
             <Stack.Screen name="Messaging" component={Messaging} />
+            <Stack.Screen name="Search" component={Search} />
         </Stack.Navigator>
     </NavigationContainer>
 )
