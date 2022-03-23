@@ -32,7 +32,7 @@ const BottomTabs = ({ navigation }) => {
             <TouchableOpacity onPress={() => setActiveTab('groups')}>
               <FontAwesomeIcon icon={ faUserGroup } style={tw`w-7 h-7 ml-2 my-1`} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setActiveTab('profile')}>
+            <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {uid: auth.currentUser.uid})}>
               <FontAwesomeIcon icon={ faUser } style={tw`w-7 h-7 ml-2 my-1`} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handleSignout()}>

@@ -4,6 +4,7 @@ import { View, Text, Image } from 'react-native';
 import UnfollowButton from './UnfollowButton';
 import FollowButton from './FollowButton';
 import DeleteButton from './DeleteButton';
+import EditableText from './EditableText';
 
 function ProfileHeader({currentUser, userData, postCount}) {
   const {username, uid, profilePic} = userData
@@ -75,10 +76,10 @@ function ProfileHeader({currentUser, userData, postCount}) {
           </View>
         </View>
         <View style={tw`p-1`}>
-          <Text>{userData.subName}</Text>
+          <EditableText currentUser={currentUser} inputText={userData.subName} type={'subName'} username={userData.username} />
         </View>
         <View style={tw`p-1`}>
-          <Text>{userData.bio}</Text>
+          <EditableText currentUser={currentUser} inputText={userData.bio} type={'bio'} username={userData.username} />
         </View>
       </View>
     </View>

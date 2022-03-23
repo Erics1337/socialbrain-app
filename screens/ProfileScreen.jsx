@@ -1,12 +1,18 @@
-import React, {useEffect, useContext, useState} from 'react'
-import Loader from '../components/Loader';
-import UserContext from '../context/userContext';
-import { Text, Image } from 'react-native';
+import React, { useEffect, useContext, useState } from "react"
+import Loader from "../components/Loader"
+import UserContext from "../context/userContext"
+import {
+	Text,
+	View,
+	Image,
+	Keyboard,
+	TouchableWithoutFeedback,
+} from "react-native"
 import SafeAreaView from "react-native-safe-area-view"
-import ProfileNavbar from '../components/profile/ProfileNavbar';
-import ProfileHeader from '../components/profile/ProfileHeader';
-import ProfilePost from '../components/profile/ProfilePost';
-import { db, auth } from '../firebase';
+import ProfileNavbar from "../components/profile/ProfileNavbar"
+import ProfileHeader from "../components/profile/ProfileHeader"
+import ProfilePost from "../components/profile/ProfilePost"
+import { db, auth } from "../firebase"
 import tw from "twrnc"
 import {
 	onSnapshot,
@@ -17,24 +23,21 @@ import {
 	doc,
 	limit,
 } from "@firebase/firestore"
+import id from "faker/lib/locales/id_ID";
 
 function ProfileScreen({ navigation, route }) {
-    const { currentUser, loginUser } = useContext(UserContext)
-    const [userData, setUserData] = useState({})
-    const [postsData, setPostsData] = useState([])
-    const [loading, setLoading] = useState(true)
+	const { currentUser, loginUser } = useContext(UserContext)
+	const [userData, setUserData] = useState({})
+	const [postsData, setPostsData] = useState([])
+	const [loading, setLoading] = useState(true)
 
 	const uid = route.params.uid
 
-    useEffect(() => {
+	useEffect(() => {
 		setLoading(true)
 		// Get user data and posts from userSlug
 		const unsubscribe = onSnapshot(
-			query(
-				collection(db, "users"),
-				where("uid", "==", uid),
-				limit(1)
-			),
+			query(collection(db, "users"), where("uid", "==", uid), limit(1)),
 			(userSnapshot) => {
 				if (userSnapshot.empty) {
 					console.log("No matching documents.")
@@ -48,7 +51,7 @@ function ProfileScreen({ navigation, route }) {
 							where("uid", "==", userSnapshot.docs[0].data().uid)
 						)
 					).then((postsSnap) => {
-						setPostsData(postsSnap.docs.map((post) => post.data()))
+						setPostsData(postsSnap.docs.map((post) => ({postId: post.id, ...post.data()})))
 					})
 				}
 			}
@@ -56,16 +59,38 @@ function ProfileScreen({ navigation, route }) {
 		setLoading(false)
 		return () => unsubscribe()
 	}, [db])
-	
+
+	console.log(postsData)
+
+
 	if (loading) return <Loader />
 	if (!userData.uid) return <Text>User not found</Text>
-  return (
+	return (
 		<SafeAreaView style={tw`flex-1`}>
-			<ProfileNavbar navigation={navigation} username={userData.username} />
-			<ProfileHeader currentUser={currentUser} userData={userData} postCount={postsData.length} />
-			<ProfilePost />
+			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+				<View>
+					<ProfileNavbar
+						navigation={navigation}
+						username={userData.username}
+					/>
+					<ProfileHeader
+						currentUser={currentUser}
+						userData={userData}
+						postCount={postsData.length}
+					/>
+					<View style={tw`flex flex-row mx-px h-full`}>
+						{postsData.map((post) => (
+							<ProfilePost
+								key={post.postId}
+								userData={userData}
+								postData={post}
+							/>
+						))}
+					</View>
+				</View>
+			</TouchableWithoutFeedback>
 		</SafeAreaView>
-  )
+	)
 }
 
 export default ProfileScreen
