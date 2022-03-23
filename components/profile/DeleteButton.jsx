@@ -13,7 +13,6 @@ function DeleteButton() {
 			.catch(function (error) {
 				console.log("Error deleting user:", error)
 			})
-		Router.push("/")
 	}
 
 	return (

@@ -23,7 +23,7 @@ import {
 	PaperAirplaneIcon, } from "react-native-heroicons/outline";
 
 
-const Post = ({ id, username, userImg, image, caption, currentUser }) => {
+const Post = ({ id, username, userImg, image, caption, currentUser, uid, navigation }) => {
 
     // const handleLike = post => {
     //     // Search for the current user in the likes_by_users array and assign inverted truthy value to variable
@@ -126,7 +126,7 @@ const Post = ({ id, username, userImg, image, caption, currentUser }) => {
     return (
         <View style={tw`mb-5`}>
             <Divider style={tw`bg-black`} width={1} orientation='vertical' />
-            <PostHeader username={username} userImg={userImg} />
+            <PostHeader username={username} userImg={userImg} uid={uid} navigation={navigation} />
             <PostImage image={image} />
             <View style={tw`mx-1 mt-1`}>
                 <PostFooter hasLiked={hasLiked} likePost={likePost} openComments={openComments} setOpenComments={setOpenComments} />
@@ -140,11 +140,13 @@ const Post = ({ id, username, userImg, image, caption, currentUser }) => {
 }
 
 
-const PostHeader = ({username, userImg}) => (
+const PostHeader = ({username, userImg, uid, navigation}) => (
     <View style={tw`flex-row justify-between m-5`}>
         <View style={tw`flex-row items-center`}>
             <Image source={{ uri: userImg }} style={tw`h-8 w-8 rounded-full p-[1.5px] border-red-500 border-2`}/>
-            <Text style={tw`ml-3 font-semibold`}>{username}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', { uid })}>
+                <Text style={tw`ml-3 font-semibold`}>{username}</Text>
+            </TouchableOpacity>
         </View>
         <DotsHorizontalIcon style={tw`h-5 text-black`} />
     </View>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import tw from 'twrnc'
 import { db } from "../../firebase"
 import {
@@ -12,7 +12,7 @@ import {
 } from "@firebase/firestore"
 
 
-function ProfilePost({ postData, userData }) {
+function ProfilePostsGrid({ postData, userData, navigation, route, index }) {
 	const [comments, setComments] = useState([])
 	const [likes, setLikes] = useState([])
 
@@ -56,10 +56,10 @@ function ProfilePost({ postData, userData }) {
 	}, [db])
 
   return (
-    <View style={tw`w-1/3 h-35 p-px`}>
+	  <TouchableOpacity style={tw`w-1/3 h-35 p-px`} onPress={() => navigation.navigate('PostsScrollScreen', {uid: userData.uid, navigation: navigation, route: route, username: userData.username, startAtTimestamp: postData.timestamp})}>
         <Image source={{ uri: image }} style={tw`h-full w-full`} />
-    </View>
+	  </TouchableOpacity>
   )
 }
 
-export default ProfilePost
+export default ProfilePostsGrid

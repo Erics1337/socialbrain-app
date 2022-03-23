@@ -38,7 +38,7 @@ function ProfileHeader({currentUser, userData, postCount}) {
     <View style={tw`flex-row justify-around mx-2`}>
       <View style={tw`flex m-3`}>
         <Image source={{ uri: profilePic }} style={tw`h-20 w-20 rounded-full p-[1.5px] border-red-500 border-2`} />
-        <Text style={tw`text-l font-semibold w-15 text-center mx-auto`}>
+        <Text style={tw`text-xl font-semibold w-15 text-center mx-auto`}>
         {username}
         </Text>
       </View>

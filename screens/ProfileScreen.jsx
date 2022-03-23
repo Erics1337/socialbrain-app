@@ -11,7 +11,7 @@ import {
 import SafeAreaView from "react-native-safe-area-view"
 import ProfileNavbar from "../components/profile/ProfileNavbar"
 import ProfileHeader from "../components/profile/ProfileHeader"
-import ProfilePost from "../components/profile/ProfilePost"
+import ProfilePostsGrid from "../components/profile/ProfilePostsGrid"
 import { db, auth } from "../firebase"
 import tw from "twrnc"
 import {
@@ -23,7 +23,6 @@ import {
 	doc,
 	limit,
 } from "@firebase/firestore"
-import id from "faker/lib/locales/id_ID";
 
 function ProfileScreen({ navigation, route }) {
 	const { currentUser, loginUser } = useContext(UserContext)
@@ -79,11 +78,14 @@ function ProfileScreen({ navigation, route }) {
 						postCount={postsData.length}
 					/>
 					<View style={tw`flex flex-row mx-px h-full`}>
-						{postsData.map((post) => (
-							<ProfilePost
+						{postsData.map((post, index) => (
+							<ProfilePostsGrid
+								navigation={navigation}
+								route={route}
 								key={post.postId}
 								userData={userData}
 								postData={post}
+								index={index}
 							/>
 						))}
 					</View>

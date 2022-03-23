@@ -19,7 +19,7 @@ import {
 } from "@firebase/firestore"
 import Loader from '../../Loader';
 
-function Posts() {
+function Posts({navigation}) {
 	const { currentUser, currentGroup, combineGroupsUsers } =
 	useContext(UserContext)
 const [posts, setPosts] = useState([])
@@ -97,6 +97,8 @@ useEffect(() => {
 	contentContainerSyle={tw`flex-1`}
 	data={posts}
 	renderItem={post => <Post
+			uid={post.item.user.uid}
+			navigation={navigation}
 			currentUser={currentUser}
 			key={post.item.id}
 			id={post.item.id}

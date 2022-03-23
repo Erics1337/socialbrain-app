@@ -38,7 +38,7 @@ const Stories = ({ navigation }) => {
 				where("uid", "!=", currentUser.uid)
 			),
 			(snapshot) => {
-				setStories(snapshot.docs.map((user) => user.data()))
+			setStories(snapshot.docs.map((user) => user.data()))
 			}
 		)
 		return () => unsubscribe()
