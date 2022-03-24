@@ -22,6 +22,7 @@ import {
 	getDocs,
 	doc,
 	limit,
+	orderBy,
 } from "@firebase/firestore"
 
 function ProfileScreen({ navigation, route }) {
@@ -47,7 +48,8 @@ function ProfileScreen({ navigation, route }) {
 					getDocs(
 						query(
 							collection(db, "posts"),
-							where("uid", "==", userSnapshot.docs[0].data().uid)
+							where("uid", "==", userSnapshot.docs[0].data().uid),
+							orderBy("timestamp", "desc"),
 						)
 					).then((postsSnap) => {
 						setPostsData(postsSnap.docs.map((post) => ({postId: post.id, ...post.data()})))
@@ -77,7 +79,7 @@ function ProfileScreen({ navigation, route }) {
 						userData={userData}
 						postCount={postsData.length}
 					/>
-					<View style={tw`flex flex-row mx-px h-full`}>
+					<View style={tw`flex flex-wrap flex-row mx-px h-full`}>
 						{postsData.map((post, index) => (
 							<ProfilePostsGrid
 								navigation={navigation}
