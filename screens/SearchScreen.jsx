@@ -2,15 +2,17 @@ import React, { useState, useRef } from "react"
 import tw from "twrnc"
 import { FlatList, Text, View, Image, TouchableOpacity } from "react-native"
 import SafeAreaView from "react-native-safe-area-view"
-import { collection, where, query, limit, getDocs } from "@firebase/firestore"
+import { collection, where, query, limit, getDocs, getDoc, doc } from "@firebase/firestore"
 import { db } from "../firebase"
 import SearchBar from "react-native-searchbar"
 
 function SearchScreen({ navigation }) {
 	const [searchResults, setSearchResults] = useState([])
+	const [searchTerm, setSearchTerm] = useState("")
 
 	const loadOptions = async (inputValue) => {
 		const searchTerm = inputValue.toLowerCase()
+		setSearchTerm(searchTerm)
 		const strlength = searchTerm.length
 		const strFrontCode = searchTerm.slice(0, strlength - 1)
 		const strEndCode = searchTerm.slice(strlength - 1, searchTerm.length)
@@ -30,20 +32,37 @@ function SearchScreen({ navigation }) {
 		}
 	}
 
+	const handleSubmitSearch = async () => {
+		try {
+			const snapshot = await getDocs(
+				query(
+					collection(db, "users"),
+					where("username", "==", searchTerm),
+					limit(1)
+				)
+			)
+			snapshot.docs[0].data().uid != undefined &&
+			navigation.navigate('ProfileScreen', {uid: snapshot.docs[0].data().uid})
+		} catch {
+			alert("User not found")
+		}
+
+	}
+
 	return (
 		<SafeAreaView style={tw`flex-1`}>
 			<View style={tw`h-20`}>
 				<SearchBar
 					handleChangeText={(text) => loadOptions(text)}
 					onBack={() => navigation.goBack()}
-                    handleSearch={(text)=> navigation.navigate(`dynamicPage/${text}`)}
+                    onSubmitEditing={() => handleSubmitSearch()}
 					placeholder='Search'
 					showOnLoad
 				/>
 			</View>
 			<View style={tw`flex-1`}>
 				{searchResults.map((user, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate(`dynamicPage/${user.username}`)}>
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate('ProfileScreen', {uid: user.uid})}>
 					    <UserCard user={user} />
                     </TouchableOpacity>
 				))}

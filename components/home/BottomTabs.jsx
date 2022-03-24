@@ -26,7 +26,7 @@ const BottomTabs = ({ navigation }) => {
       <View style={tw`w-full bottom-[1%] z-10`}>
         <Divider width={1} orientation='vertical' />
           <View style={tw`flex-row justify-evenly pt-4`}>
-            <TouchableOpacity onPress={() => navigation.push('Search')}>
+            <TouchableOpacity onPress={() => navigation.push('SearchScreen')}>
               <FontAwesomeIcon icon={ faSearch } style={tw`w-7 h-7 ml-2 my-1`} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setActiveTab('groups')}>
