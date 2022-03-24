@@ -15,15 +15,17 @@ function GroupsTabs() {
     
   
     return (
-      <DropDownPicker
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-        onSelectItem={(value) => setCurrentGroup(value)}
-      />
+        <DropDownPicker
+        style={tw`mx-auto`}
+          itemKey={'value'}
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+          onSelectItem={(value) => setCurrentGroup(value)}
+        />
     )
 
 }
