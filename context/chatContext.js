@@ -78,7 +78,8 @@ export const ChatProvider = ({ children }) => {
 	}
 
 	// Sets all messages from chatUser to currentUser to seen
-	const clearMessageCountFromUser = async (currentUser) => {
+	const clearMessageCountFromUser = async (cancel, currentUser) => {
+		if (cancel) return
 		console.log('clear Message Count of Messages From Chat User');
 		if (!state.currentChat) return
 		const gotDocs = await getDocs(

@@ -5,10 +5,11 @@ import HomeScreen from './HomeScreen'
 import NewPostScreen from './NewPostScreen'
 import LoginScreen from './LoginScreen'
 import SignupScreen from './SignupScreen'
-import Messaging from './Messaging'
+import MessagingScreen from './MessagingScreen'
 import SearchScreen from './SearchScreen'
 import ProfileScreen from './ProfileScreen'
 import PostsScrollScreen from './PostsScrollScreen'
+import ChatUserScreen from '../components/chat/ChatUserScreen';
 
 const Stack = createNativeStackNavigator()
 
@@ -24,10 +25,11 @@ export const SignedInStack = () => (
             <Stack.Screen name="NewPostScreen" component={NewPostScreen} />
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="SignupScreen" component={SignupScreen} />
-            <Stack.Screen name="Messaging" component={Messaging} />
+            <Stack.Screen name="MessagingScreen" component={MessagingScreen} />
             <Stack.Screen name="SearchScreen" component={SearchScreen} />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
             <Stack.Screen name="PostsScrollScreen" component={PostsScrollScreen} />
+            <Stack.Screen name="ChatUserScreen" component={ChatUserScreen} />
         </Stack.Navigator>
     </NavigationContainer>
 )

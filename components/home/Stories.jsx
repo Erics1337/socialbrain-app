@@ -15,7 +15,7 @@ import {
 } from "@firebase/firestore"
 
 
-const Stories = ({ navigation }) => {
+const Stories = ({ navigation, linksTo }) => {
     const [stories, setStories] = useState([])
 	const {
 		currentUser,
@@ -48,7 +48,7 @@ const Stories = ({ navigation }) => {
         <View style={tw`my-3`}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 {stories.map((story, i) => (
-					<TouchableOpacity key={i} onPress={() => navigation.navigate('ProfileScreen', {uid: story.uid})}>
+					<TouchableOpacity key={i} onPress={() => navigation.navigate(linksTo, {uid: story.uid})}>
                     <View style={tw`px-1`}>
                         <Image source={{ uri: story.profilePic }} style={tw`h-15 w-15 rounded-full p-[1.5px] border-red-500 border-2`} />
                         <Text style={tw`text-xs w-15 text-center`}>

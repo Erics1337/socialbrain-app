@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react'
-import Navbar from '../components/home/Navbar';
 import Loader from '../components/Loader';
 import UserContext from "../context/userContext"
 import tw from "twrnc"
@@ -8,10 +7,13 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import { auth } from "../firebase"
 import GroupsTabs from '../components/GroupsTabs';
+import ChatNavbar from '../components/chat/ChatNavbar';
+import Stories from '../components/home/Stories';
+import RecentChats from '../components/chat/RecentChats';
 
 
 
-function Messaging({ navigation }) {
+function MessagingScreen({ navigation }) {
 	const { loading, loginUser, checkLoggedIn, currentUser, currentGroup, combineGroupUsers } = useContext(UserContext)
 
     useEffect(() => {
@@ -21,15 +23,13 @@ function Messaging({ navigation }) {
 
 	if (loading) return <Loader />
 	return (
-		<>
-				<SafeAreaView className={tw`bg-grey-50`}>
-					<View className={tw`mx-auto mb-8`}>
-						<Text className={tw`text-2xl text-center text-grey-900`}>Messaging</Text>
-                        <GroupsTabs />
-					</View>
-				</SafeAreaView>
-		</>
+			<SafeAreaView className={tw`flex-1`}>
+				<ChatNavbar navigation={navigation} username={currentUser.username}/>
+				<GroupsTabs />
+				{/* <Stories navigation={navigation} linksTo={'ChatScreen'} /> */}
+				<RecentChats navigation={navigation} />
+			</SafeAreaView>
 	)
 }
 
-export default Messaging
+export default MessagingScreen

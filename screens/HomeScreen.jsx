@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
         <SafeAreaView style={tw`flex-1`}>
             <Navbar navigation={navigation} />
             <GroupsTabs />
-            <Stories navigation={navigation}/>
+            <Stories navigation={navigation} linksTo={'ProfileScreen'} />
             <Posts navigation={navigation}/>
             <BottomTabs navigation={navigation} />
         </SafeAreaView>
