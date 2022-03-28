@@ -38,6 +38,7 @@ const Stories = ({ group = null, navigation, linksTo='ProfileScreen' }) => {
 		usersInGroup,
 	} = useContext(UserContext)
 	const [menuOpened, setMenuOpened] = useState(false)
+	const [selectedStory, setSelectedStory] = useState({})
 
 	// allows group to be passed in as a prop or not to use currentGroup
 	if (!group) group = currentGroup
@@ -94,6 +95,7 @@ const Stories = ({ group = null, navigation, linksTo='ProfileScreen' }) => {
 			return () => unsubscribe()
 		}, [db, currentGroup, stories])
 
+
 		
 	return (
 		<View style={tw`flex-row m-3 bg-gray-200 p-3`}>
@@ -111,7 +113,7 @@ const Stories = ({ group = null, navigation, linksTo='ProfileScreen' }) => {
 				{stories.map((story, i) => (
 					<TouchableOpacity
 						key={i}
-						onPress={() => setMenuOpened(!menuOpened)}>
+						onPress={() => {setMenuOpened(!menuOpened); setSelectedStory(story)}}>
 						<View style={tw`px-1`}>
 							<Image
 								source={{ uri: story.profilePic }}
@@ -124,49 +126,47 @@ const Stories = ({ group = null, navigation, linksTo='ProfileScreen' }) => {
 									: story.username.toLowerCase()}
 							</Text>
 						</View>
-						{/* Menu */}
 						<Menu
-							opened={menuOpened}
-							onBackdropPress={() => setMenuOpened(!menuOpened)}>
-							<MenuTrigger />
-							<MenuOptions>
-								<MenuOption
-									onSelect={() =>
-										navigateToProfile(story.uid)
-									}>
-									<Text style={{ color: "red" }}>
-										Profile
-									</Text>
-								</MenuOption>
-								<MenuOption
-									onSelect={() => moveToGroup(story.uid, group, "loved")}
-									text='Move to "loved"'
-								/>
-								<MenuOption
-									onSelect={() => moveToGroup(story.uid, group, "family")}
-									text='Move to "Family"'
-								/>
-								<MenuOption
-									onSelect={() => moveToGroup(story.uid, group, "friends")}
-									text='Move to "Friends"'
-								/>
-								<MenuOption
-									onSelect={() => moveToGroup(story.uid, group, "connections")}
-									text='Move to "Connections"'
-								/>
-								<MenuOption
-									onSelect={() =>
-										moveToGroup(story.uid, group, "acquaintances")
-									}
-									text='Move to "Acquaintances"'
-								/>
-								<MenuOption
-									onSelect={() => moveToGroup(story.uid, group, "recognizable")}
-									text='Move to "Recognizable"'
-								/>
-							</MenuOptions>
-
-						</Menu>
+						opened={menuOpened}
+						onBackdropPress={() => setMenuOpened(!menuOpened)}>
+						<MenuTrigger />
+						<MenuOptions>
+							<MenuOption
+								onSelect={() =>
+									navigateToProfile(selectedStory.uid)
+								}>
+								<Text style={{ color: "red" }}>
+									{`${selectedStory.username}'s Profile`}
+								</Text>
+							</MenuOption>
+							<MenuOption
+								onSelect={() => moveToGroup(selectedStory.uid, group, "loved")}
+								text='Move to "loved"'
+							/>
+							<MenuOption
+								onSelect={() => moveToGroup(selectedStory.uid, group, "family")}
+								text='Move to "Family"'
+							/>
+							<MenuOption
+								onSelect={() => moveToGroup(selectedStory.uid, group, "friends")}
+								text='Move to "Friends"'
+							/>
+							<MenuOption
+								onSelect={() => moveToGroup(selectedStory.uid, group, "connections")}
+								text='Move to "Connections"'
+							/>
+							<MenuOption
+								onSelect={() =>
+									moveToGroup(selectedStory.uid, group, "acquaintances")
+								}
+								text='Move to "Acquaintances"'
+							/>
+							<MenuOption
+								onSelect={() => moveToGroup(selectedStory.uid, group, "recognizable")}
+								text='Move to "Recognizable"'
+							/>
+						</MenuOptions>
+					</Menu>					
 					</TouchableOpacity>
 				))}
 			</ScrollView>

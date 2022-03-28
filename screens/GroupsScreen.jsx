@@ -25,7 +25,7 @@ function GroupsScreen({navigation}) {
                 <Text style={tw`text-2xl text-gray-600`}>Groups</Text>
             </ScreenNav>
             <View style={tw`flex items-center mx-5`}>
-                <Text style={tw`text-center py-2`}>Drag and drop users to edit who belongs to which broadcast group</Text>
+                <Text style={tw`text-center py-2`}>Edit who belongs to which broadcast group</Text>
             </View>
             <ScrollView>
                 <Text style={tw`mx-auto pt-3`} >Loved</Text>
