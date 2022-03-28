@@ -9,7 +9,8 @@ import MessagingScreen from './MessagingScreen'
 import SearchScreen from './SearchScreen'
 import ProfileScreen from './ProfileScreen'
 import PostsScrollScreen from './PostsScrollScreen'
-import ChatUserScreen from '../components/chat/ChatUserScreen';
+import ChatUserScreen from '../components/chat/ChatUserScreen'
+import GroupsScreen from './GroupsScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -30,6 +31,7 @@ export const SignedInStack = () => (
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
             <Stack.Screen name="PostsScrollScreen" component={PostsScrollScreen} />
             <Stack.Screen name="ChatUserScreen" component={ChatUserScreen} />
+            <Stack.Screen name="GroupsScreen" component={GroupsScreen} />
         </Stack.Navigator>
     </NavigationContainer>
 )

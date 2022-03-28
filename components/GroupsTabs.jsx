@@ -24,7 +24,7 @@ function GroupsTabs() {
           setOpen={setOpen}
           setValue={setValue}
           setItems={setItems}
-          onSelectItem={(value) => setCurrentGroup(value)}
+          onSelectItem={(value) => setCurrentGroup(value.value)}
         />
     )
 

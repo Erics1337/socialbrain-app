@@ -19,6 +19,7 @@ export const setModal = (modalState) => {
 	}
 }
 export const setGroup = (group) => {
+	console.log('setting group from action', group)
 	return {
 		type: "SET_CURRANT_GROUP",
 		group,
