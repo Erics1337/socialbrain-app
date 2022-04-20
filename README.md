@@ -1,4 +1,4 @@
-# My Universal React Project
+# Social Brain Network Universal React Project
 
 <p>
   <!-- iOS -->
