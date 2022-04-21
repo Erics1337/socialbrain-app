@@ -42,7 +42,7 @@ This project can be run from a web browser or the Expo client app. You may find 
  - Forms handled with formik
 
 ## Feature Wish-list
-- Infinite scroll on feed
+- Upload Custom Profile Photo
 ## Getting Started
 ```
 npm start
